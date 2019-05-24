@@ -1,0 +1,47 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        applicationId "com.ark.sample"
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    aaptOptions {
+        cruncherEnabled false
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    /*implementation project(':auth')
+    implementation project(':auth_qq')
+    implementation project(':auth_weixin')
+    implementation project(':auth_weibo')
+    implementation project(':auth_alipay')
+    implementation project(':auth_unionpay')
+    implementation project(':auth_huawei')*/
+
+    /*implementation 'com.ark.custom:auth:1.0.0'
+    implementation 'com.ark.custom:auth_qq:1.0.0'
+    implementation 'com.ark.custom:auth_weixin:1.0.0'
+    implementation 'com.ark.custom:auth_weibo:1.0.0'
+    implementation 'com.ark.custom:auth_alipay:1.0.0'
+    implementation 'com.ark.custom:auth_huawei:1.0.0'
+    implementation 'com.ark.custom:auth_unionpay:1.0.0'*/
+}
