@@ -1,36 +1,43 @@
-package com.ark.auth;
+package com.ark.auth.unionpay;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+
+import com.ark.auth.Auth;
+import com.ark.auth.AuthActivity;
+import com.ark.auth.AuthCallback;
+import com.ark.auth.BaseAuthBuild;
+import com.ark.auth.BaseAuthBuildForYL;
 import com.unionpay.UPPayAssistEx;
 
 public class AuthBuildForYL extends BaseAuthBuildForYL {
-    AuthBuildForYL(Context context) {
+
+    private AuthBuildForYL(Context context) {
         super(context);
     }
 
     public static Auth.AuthBuildFactory getFactory() {
         return new Auth.AuthBuildFactory() {
             @Override
-            <T extends BaseAuthBuild> T getAuthBuild(Context context) {
+            public <T extends BaseAuthBuild> T getAuthBuild(Context context) {
                 return (T) new AuthBuildForYL(context);
             }
         };
     }
 
     @Override
-    BaseAuthBuildForYL.Controller getController(Activity activity) {
+    protected BaseAuthBuildForYL.Controller getController(Activity activity) {
         return new Controller(this, activity);
     }
 
-    @Override           // 初始化资源
-    void init() {
+    @Override
+    protected void init() {
     }
 
-    @Override           // 清理资源
-    void destroy() {
+    @Override
+    protected void destroy() {
         super.destroy();
     }
 
@@ -100,9 +107,9 @@ public class AuthBuildForYL extends BaseAuthBuildForYL {
         public void callback(int requestCode, int resultCode, Intent data) {
             if (data != null && data.getExtras() != null) {
                 String str = data.getExtras().getString("pay_result");
-                if( "success".equalsIgnoreCase(str) ){
+                if ("success".equalsIgnoreCase(str)) {
                     mBuild.mCallback.onSuccessForPay(String.valueOf(resultCode), "银联支付成功");
-                }  else if ("fail".equalsIgnoreCase(str)) {
+                } else if ("fail".equalsIgnoreCase(str)) {
                     mBuild.mCallback.onFailed(String.valueOf(resultCode), "银联支付失败");
                 } else if ("cancel".equalsIgnoreCase(str)) {
                     mBuild.mCallback.onCancel();

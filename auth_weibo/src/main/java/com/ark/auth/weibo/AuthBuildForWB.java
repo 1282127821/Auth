@@ -1,4 +1,4 @@
-package com.ark.auth;
+package com.ark.auth.weibo;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,6 +7,13 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
+import com.ark.auth.Auth;
+import com.ark.auth.AuthActivity;
+import com.ark.auth.AuthCallback;
+import com.ark.auth.BaseAuthBuild;
+import com.ark.auth.BaseAuthBuildForWB;
+import com.ark.auth.UserInfoForThird;
+import com.ark.auth.Utils;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.ImageObject;
 import com.sina.weibo.sdk.api.MultiImageObject;
@@ -27,26 +34,26 @@ import com.sina.weibo.sdk.utils.Utility;
 public class AuthBuildForWB extends BaseAuthBuildForWB {
     private static boolean isInit = false;
 
-    AuthBuildForWB(Context context) {
+    private AuthBuildForWB(Context context) {
         super(context);
     }
 
     public static Auth.AuthBuildFactory getFactory() {
         return new Auth.AuthBuildFactory() {
             @Override
-            <T extends BaseAuthBuild> T getAuthBuild(Context context) {
+            public <T extends BaseAuthBuild> T getAuthBuild(Context context) {
                 return (T) new AuthBuildForWB(context);
             }
         };
     }
 
     @Override
-    BaseAuthBuildForWB.Controller getController(Activity activity) {
+    protected BaseAuthBuildForWB.Controller getController(Activity activity) {
         return new Controller(this, activity);
     }
 
     @Override
-    void init() {
+    protected void init() {
         if (!isInit) {
             if (TextUtils.isEmpty(Auth.AuthBuilderInit.getInstance().getWBAppKey()) ||
                     TextUtils.isEmpty(Auth.AuthBuilderInit.getInstance().getWBRedirectUrl()) || TextUtils.isEmpty(Auth.AuthBuilderInit.getInstance().getWBScope())) {
@@ -63,7 +70,7 @@ public class AuthBuildForWB extends BaseAuthBuildForWB {
     }
 
     @Override                                               // 清理资源
-    void destroy() {
+    protected void destroy() {
         super.destroy();
         if (mImagePathList != null) {
             mImagePathList.clear();

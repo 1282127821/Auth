@@ -3,22 +3,22 @@ package com.ark.auth;
 import android.content.Context;
 
 public abstract class BaseAuthBuild {
-    int mAction = Auth.ErrorNotAction;                          // 事件
-    int mWith;                                                  // 第三方标记
-    String mSign;                                               // 任务标记
-    Context mContext;                                           // 上下文
-    AuthCallback mCallback;                                     // 回调函数
+    protected int mAction = Auth.ErrorNotAction;                          // 事件
+    protected int mWith;                                                  // 第三方标记
+    protected String mSign;                                               // 任务标记
+    protected Context mContext;                                           // 上下文
+    protected AuthCallback mCallback;                                     // 回调函数
 
-    BaseAuthBuild(Context context, @Auth.WithThird int with) {
+    public BaseAuthBuild(Context context, @Auth.WithThird int with) {
         mContext = context;
         mWith = with;
         mSign = String.valueOf(System.currentTimeMillis());
         init();
     }
 
-    abstract void init();
+    protected abstract void init();
 
-    void destroy() {
+    protected void destroy() {
         Auth.removeBuilder(this);
         mContext = null;
         mCallback = null;

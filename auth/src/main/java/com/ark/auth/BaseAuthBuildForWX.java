@@ -5,28 +5,28 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 public abstract class BaseAuthBuildForWX extends BaseAuthBuild {
-    int mShareType = -100;                                      // 分享类型
-    String mID;                                                 // 小程序 ID
-    String mPath;                                               // 小程序 Path
+    protected int mShareType = -100;                                      // 分享类型
+    protected String mID;                                                 // 小程序 ID
+    protected String mPath;                                               // 小程序 Path
 
-    String mPartnerId;                                          // 微信支付 PartnerId. 微信支付分配的商户号
-    String mPrepayId;                                           // 微信返回的支付交易会话ID
-    String mPackageValue;                                       // 暂填写固定值Sign=WXPay, 但还是由外部传入, 避免以后变更
-    String mNonceStr;                                           // 随机字符串，不长于32位
-    String mTimestamp;                                          // 时间戳
-    String mPaySign;                                            // 签名
+    protected String mPartnerId;                                          // 微信支付 PartnerId. 微信支付分配的商户号
+    protected String mPrepayId;                                           // 微信返回的支付交易会话ID
+    protected String mPackageValue;                                       // 暂填写固定值Sign=WXPay, 但还是由外部传入, 避免以后变更
+    protected String mNonceStr;                                           // 随机字符串，不长于32位
+    protected String mTimestamp;                                          // 时间戳
+    protected String mPaySign;                                            // 签名
 
-    String mTitle;                                              // 标题
-    String mText;                                               // 文本
-    String mDescription;                                        // 描述
-    Bitmap mBitmap;                                             // 图片
-    String mUrl;                                                // Url
+    protected String mTitle;                                              // 标题
+    protected String mText;                                               // 文本
+    protected String mDescription;                                        // 描述
+    protected Bitmap mBitmap;                                             // 图片
+    protected String mUrl;                                                // Url
 
-    BaseAuthBuildForWX(Context context) {
+    protected BaseAuthBuildForWX(Context context) {
         super(context, Auth.WithWX);
     }
 
-    abstract Controller getController(Activity activity);
+    protected abstract Controller getController(Activity activity);
 
     @Override
     public BaseAuthBuildForWX setAction(@Auth.ActionWX int action) {
@@ -202,7 +202,7 @@ public abstract class BaseAuthBuildForWX extends BaseAuthBuild {
         return this;
     }
 
-    interface Controller {
+    public interface Controller {
         void destroy();
 
         void callback();

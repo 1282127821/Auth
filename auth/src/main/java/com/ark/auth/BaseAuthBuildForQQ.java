@@ -7,27 +7,27 @@ import android.content.Intent;
 import java.util.ArrayList;
 
 public abstract class BaseAuthBuildForQQ extends BaseAuthBuild {
-    String mTitle;                                          // 标题
-    String mDescription;                                    // 描述
-    String mUrl;                                            // Url
+    protected String mTitle;                                          // 标题
+    protected String mDescription;                                    // 描述
+    protected String mUrl;                                            // Url
 
-    String mImageUrl;                                       // 图片 url
-    String mAudioUrl;                                       // 音频 url
-    String mArk;
-    String mName;
-    Boolean mQzone = null;
-    boolean mMood = false;
-    boolean mMultiImage = false;
-    String mBack;
-    String mScene;
-    ArrayList<String> mImageList;                           // 图片集合, 最多支持9张图片，多余的图片会被丢弃; 说说 <=9张图片为发表说说，>9张为上传图片到相册,只支持本地图片
+    protected String mImageUrl;                                       // 图片 url
+    protected String mAudioUrl;                                       // 音频 url
+    protected String mArk;
+    protected String mName;
+    protected Boolean mQzone = null;
+    protected boolean mMood = false;
+    protected boolean mMultiImage = false;
+    protected String mBack;
+    protected String mScene;
+    protected ArrayList<String> mImageList;                           // 图片集合, 最多支持9张图片，多余的图片会被丢弃; 说说 <=9张图片为发表说说，>9张为上传图片到相册,只支持本地图片
 
 
-    BaseAuthBuildForQQ(Context context) {
+    public BaseAuthBuildForQQ(Context context) {
         super(context, Auth.WithQQ);
     }
 
-    abstract Controller getController(Activity activity);
+    public abstract Controller getController(Activity activity);
 
     @Override
     public BaseAuthBuildForQQ setAction(@Auth.ActionQQ int action) {
@@ -199,7 +199,7 @@ public abstract class BaseAuthBuildForQQ extends BaseAuthBuild {
         return this;
     }
 
-    interface Controller {
+    public interface Controller {
         void destroy();
 
         void callback(int requestCode, int resultCode, Intent data);

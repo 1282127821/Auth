@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 
 public abstract class BaseAuthBuildForZFB extends BaseAuthBuild {
-    boolean isShowLoading = true;
-    String mOrderInfo;
-    String mUri;
+    protected boolean isShowLoading = true;
+    protected String mOrderInfo;
+    protected String mUri;
 
-    BaseAuthBuildForZFB(Context context) {
+    protected BaseAuthBuildForZFB(Context context) {
         super(context, Auth.WithZFB);
     }
 
@@ -33,5 +33,5 @@ public abstract class BaseAuthBuildForZFB extends BaseAuthBuild {
         return this;
     }
 
-    abstract void pay(Activity activity);
+    protected abstract void pay(Activity activity);
 }

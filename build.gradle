@@ -16,13 +16,12 @@ buildscript {
 allprojects {
     repositories {
         maven {
-            url 'http://nexus.xiaoc.cn/repository/maven-releases/'
+            url 'http://nexus.xiaoc.cn/repository/xslczx/'
         }
         jcenter()
-        google()
-        maven { url 'https://dl.bintray.com/umsdk/release' }
+        mavenCentral()
         maven { url "https://dl.bintray.com/thelasterstar/maven/" }
-        maven { url 'http://developer.huawei.com/repo/' }
+        google()
     }
     tasks.withType(Javadoc).all {
         enabled = false

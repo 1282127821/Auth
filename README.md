@@ -31,12 +31,12 @@
 
 	```aidl
     dependencies {
-        compile 'com.ark.auth:auth:1.4.5'
-        compile 'com.ark.auth:auth_qq:1.4.5'
-        compile 'com.ark.auth:auth_weibo:1.4.5'
-        compile 'com.ark.auth:auth_weixin:1.4.5'
-        compile 'com.ark.auth:auth_unionpay:1.4.5'
-        compile 'com.ark.auth:auth_alipay:1.4.5'
+        compile 'com.ark.auth:core:1.0.0'
+        compile 'com.ark.auth:qq:1.0.0'
+        compile 'com.ark.auth:weibo:1.0.0'
+        compile 'com.ark.auth:weixin:1.0.0'
+        compile 'com.ark.auth:unionpay:1.0.0'
+        compile 'com.ark.auth:alipay:1.0.0'
     }
     ```
 
@@ -75,7 +75,7 @@
         
         <!-- 支付宝签约 -->
         <activity
-            android:name="com.ark.auth.AliRouseActivity"
+            android:name="com.ark.auth.alipay.AliRouseActivity"
             android:allowTaskReparenting="true">
             <!--支付宝免密支付完成时走此filter，必须匹配scheme-->
             <intent-filter>

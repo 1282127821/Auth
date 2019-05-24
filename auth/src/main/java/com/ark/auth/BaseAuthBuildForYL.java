@@ -5,14 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 
 public abstract class BaseAuthBuildForYL extends BaseAuthBuild {
-    String mOrderInfo;
-    boolean mTest = false;
+    protected String mOrderInfo;
+    protected boolean mTest = false;
 
-    BaseAuthBuildForYL(Context context) {
+    protected BaseAuthBuildForYL(Context context) {
         super(context, Auth.WithYL);
     }
 
-    abstract Controller getController(Activity activity);
+    protected abstract Controller getController(Activity activity);
 
     @Override
     public BaseAuthBuildForYL setAction(@Auth.ActionYL int action) {
@@ -36,7 +36,7 @@ public abstract class BaseAuthBuildForYL extends BaseAuthBuild {
         return this;
     }
 
-    interface Controller {
+    public interface Controller {
         void pay();
 
         void destroy();

@@ -9,22 +9,22 @@ import android.net.Uri;
 import java.util.ArrayList;
 
 public abstract class BaseAuthBuildForWB extends BaseAuthBuild {
-    String mTitle;                                          // 标题
-    String mText;                                           // 文本
-    String mDescription;                                    // 描述
-    Bitmap mBitmap;                                         // 图片
-    String mUrl;                                            // Url
+    protected String mTitle;                                          // 标题
+    protected String mText;                                           // 文本
+    protected String mDescription;                                    // 描述
+    protected Bitmap mBitmap;                                         // 图片
+    protected String mUrl;                                            // Url
 
-    Uri mUri;                                               // 微博 Uri 地址
-    boolean mStory = false;                                 // 微博 是否分享到微博故事, 仅支持单图 和 视频
-    boolean mMultiImage = false;                            // 是否是多图分享
-    ArrayList<Uri> mImagePathList;                          // 微博 多图路径地址
+    protected Uri mUri;                                               // 微博 Uri 地址
+    protected boolean mStory = false;                                 // 微博 是否分享到微博故事, 仅支持单图 和 视频
+    protected boolean mMultiImage = false;                            // 是否是多图分享
+    protected ArrayList<Uri> mImagePathList;                          // 微博 多图路径地址
 
-    BaseAuthBuildForWB(Context context) {
+    protected BaseAuthBuildForWB(Context context) {
         super(context, Auth.WithWB);
     }
 
-    abstract Controller getController(Activity activity);
+    protected abstract Controller getController(Activity activity);
 
     @Override
     public BaseAuthBuildForWB setAction(@Auth.ActionWB int action) {
@@ -124,7 +124,7 @@ public abstract class BaseAuthBuildForWB extends BaseAuthBuild {
         return this;
     }
 
-    interface Controller {
+    public interface Controller {
         void destroy();
 
         void callbackShare();

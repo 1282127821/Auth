@@ -1,18 +1,21 @@
-package com.ark.auth;
+package com.ark.auth.alipay;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.ark.auth.Auth;
+import com.ark.auth.AuthCallback;
+import com.ark.auth.Utils;
+
 public class AliRouseActivity extends Activity {
 
-    static AuthCallback mCallback;
+    protected static AuthCallback mCallback;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         checkPayResult();
     }
 

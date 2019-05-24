@@ -1,4 +1,4 @@
-package com.ark.auth;
+package com.ark.auth.qq;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+
+import com.ark.auth.Auth;
+import com.ark.auth.AuthActivity;
+import com.ark.auth.AuthCallback;
+import com.ark.auth.BaseAuthBuild;
+import com.ark.auth.BaseAuthBuildForQQ;
+import com.ark.auth.UserInfoForThird;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzonePublish;
@@ -13,6 +20,7 @@ import com.tencent.connect.share.QzoneShare;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
+
 import org.json.JSONObject;
 
 @SuppressWarnings("unused")
@@ -20,27 +28,31 @@ public class AuthBuildForQQ extends BaseAuthBuildForQQ {
 
     private Tencent mTencent;
 
-    AuthBuildForQQ(Context context) {
+    private AuthBuildForQQ(Context context) {
         super(context);
     }
 
     public static Auth.AuthBuildFactory getFactory() {
         return new Auth.AuthBuildFactory() {
             @Override
-            <T extends BaseAuthBuild> T getAuthBuild(Context context) {
+            public <T extends BaseAuthBuild> T getAuthBuild(Context context) {
                 //noinspection unchecked
                 return (T) new AuthBuildForQQ(context);
             }
         };
     }
 
+    public Tencent getTencent() {
+        return mTencent;
+    }
+
     @Override
-    BaseAuthBuildForQQ.Controller getController(Activity activity) {
+    public BaseAuthBuildForQQ.Controller getController(Activity activity) {
         return new Controller(this, activity);
     }
 
     @Override
-    void init() {
+    protected void init() {
         if (TextUtils.isEmpty(Auth.AuthBuilderInit.getInstance().getQQAppID())) {
             throw new IllegalArgumentException("QQAppID was empty");
         } else {
@@ -50,7 +62,7 @@ public class AuthBuildForQQ extends BaseAuthBuildForQQ {
     }
 
     @Override
-    void destroy() {
+    protected void destroy() {
         super.destroy();
         mTencent = null;
         if (mImageList != null) {

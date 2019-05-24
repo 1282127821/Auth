@@ -147,7 +147,7 @@ public class Auth {
         AuthBuilderInit() {
         }
 
-        static AuthBuilderInit getInstance() {
+        public static AuthBuilderInit getInstance() {
             if (mInstance != null) {
                 return mInstance;
             } else {
@@ -303,8 +303,8 @@ public class Auth {
         }
     }
 
-    abstract static class AuthBuildFactory {
+    public abstract static class AuthBuildFactory {
 
-        abstract <T extends BaseAuthBuild> T getAuthBuild(Context context);
+        public abstract <T extends BaseAuthBuild> T getAuthBuild(Context context);
     }
 }

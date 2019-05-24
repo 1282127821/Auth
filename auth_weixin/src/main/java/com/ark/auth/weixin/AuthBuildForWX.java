@@ -1,4 +1,4 @@
-package com.ark.auth;
+package com.ark.auth.weixin;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,16 +7,32 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+
+import com.ark.auth.Auth;
+import com.ark.auth.AuthCallback;
+import com.ark.auth.BaseAuthBuild;
+import com.ark.auth.BaseAuthBuildForWX;
+import com.ark.auth.UserInfoForThird;
+import com.ark.auth.Utils;
 import com.tencent.mm.opensdk.constants.Build;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelbiz.OpenWebview;
-import com.tencent.mm.opensdk.modelmsg.*;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXImageObject;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
+import com.tencent.mm.opensdk.modelmsg.WXMusicObject;
+import com.tencent.mm.opensdk.modelmsg.WXTextObject;
+import com.tencent.mm.opensdk.modelmsg.WXVideoObject;
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
 import org.json.JSONObject;
 
 import java.util.List;
@@ -24,29 +40,33 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class AuthBuildForWX extends BaseAuthBuildForWX {
 
-    static IWXAPI mApi;
+    private static IWXAPI mApi;
 
-    AuthBuildForWX(Context context) {
+    private AuthBuildForWX(Context context) {
         super(context);
     }
 
     public static Auth.AuthBuildFactory getFactory() {
         return new Auth.AuthBuildFactory() {
             @Override
-            <T extends BaseAuthBuild> T getAuthBuild(Context context) {
+            public <T extends BaseAuthBuild> T getAuthBuild(Context context) {
                 //noinspection unchecked
                 return (T) new AuthBuildForWX(context);
             }
         };
     }
 
+    public IWXAPI getApi() {
+        return mApi;
+    }
+
     @Override
-    BaseAuthBuildForWX.Controller getController(Activity activity) {
+    protected BaseAuthBuildForWX.Controller getController(Activity activity) {
         return new Controller(this, activity);
     }
 
     @Override
-    void init() {
+    protected void init() {
         if (TextUtils.isEmpty(Auth.AuthBuilderInit.getInstance().getWXAppID())) {
             throw new IllegalArgumentException("WECHAT_APPID was empty");
         } else if (mApi == null) {
@@ -57,8 +77,7 @@ public class AuthBuildForWX extends BaseAuthBuildForWX {
     }
 
     @Override
-        // 清理资源
-    void destroy() {
+    protected void destroy() {
         super.destroy();
         mBitmap = null;
     }
@@ -143,7 +162,7 @@ public class AuthBuildForWX extends BaseAuthBuildForWX {
             }
             mCallback.onFailed(String.valueOf(Auth.ErrorUninstalled), "请安装微信客户端");
             return false;
-        } else if (mApi.getWXAppSupportAPI()< Build.PAY_SUPPORTED_SDK_INT) {
+        } else if (mApi.getWXAppSupportAPI() < Build.PAY_SUPPORTED_SDK_INT) {
             mCallback.onFailed(String.valueOf(Auth.ErrorUnknown), "微信客户端版本过低");
             return false;
         } else {

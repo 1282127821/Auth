@@ -14,11 +14,11 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Utils {
+public final class Utils {
     private Utils() {
     }
 
-    static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
+    public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
         ByteArrayOutputStream output = null;
         try {
             output = new ByteArrayOutputStream();
@@ -41,7 +41,7 @@ public class Utils {
         }
     }
 
-    static String get(String url) {
+    public static String get(String url) {
         HttpURLConnection conn = null;
         try {
             URL mURL = new URL(url);                                                    // 利用 string url 构建 URL 对象
@@ -67,7 +67,7 @@ public class Utils {
         return null;
     }
 
-    static String post(String url, String content) {
+    public static String post(String url, String content) {
         HttpURLConnection conn = null;
         try {
             URL mURL = new URL(url);
@@ -115,7 +115,7 @@ public class Utils {
     }
 
 
-    static boolean isAppInstalled(Context context, String packageName) {
+    public static boolean isAppInstalled(Context context, String packageName) {
         final PackageManager packageManager = context.getPackageManager();              // 获取packagemanager
         List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);           // 获取所有已安装程序的包信息
         List<String> pName = new ArrayList<>();                                         // 用于存储所有已安装程序的包名
@@ -129,7 +129,7 @@ public class Utils {
         return pName.contains(packageName);                                             // 判断pName中是否有目标程序的包名，有TRUE，没有FALSE
     }
 
-    static String decodeURL(String url, String key) {
+    public static String decodeURL(String url, String key) {
         String decode = null;
         try {
             decode = URLDecoder.decode(url, "utf-8");

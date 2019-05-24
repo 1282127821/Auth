@@ -1,4 +1,4 @@
-package com.ark.auth;
+package com.ark.auth.alipay;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,21 +6,28 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+
 import com.alipay.sdk.app.PayTask;
+import com.ark.auth.Auth;
+import com.ark.auth.AuthActivity;
+import com.ark.auth.AuthCallback;
+import com.ark.auth.BaseAuthBuild;
+import com.ark.auth.BaseAuthBuildForZFB;
+import com.ark.auth.Utils;
 
 import java.util.Map;
 
 @SuppressWarnings("unused")
 public class AuthBuildForZFB extends BaseAuthBuildForZFB {
 
-    AuthBuildForZFB(Context context) {
+    private AuthBuildForZFB(Context context) {
         super(context);
     }
 
     public static Auth.AuthBuildFactory getFactory() {
         return new Auth.AuthBuildFactory() {
             @Override
-            <T extends BaseAuthBuild> T getAuthBuild(Context context) {
+            public <T extends BaseAuthBuild> T getAuthBuild(Context context) {
                 //noinspection unchecked
                 return (T) new AuthBuildForZFB(context);
             }
@@ -36,11 +43,11 @@ public class AuthBuildForZFB extends BaseAuthBuildForZFB {
     }
 
     @Override
-    void init() {
+    protected void init() {
     }
 
     @Override
-    void destroy() {
+    protected void destroy() {
         super.destroy();
     }
 
@@ -80,7 +87,7 @@ public class AuthBuildForZFB extends BaseAuthBuildForZFB {
     }
 
     @Override
-    void pay(Activity activity) {
+    protected void pay(Activity activity) {
         if (TextUtils.isEmpty(mOrderInfo)) {
             mCallback.onFailed(String.valueOf(Auth.ErrorParameter),
                     "必须添加 OrderInfo, 使用 payOrderInfo(info) ");
