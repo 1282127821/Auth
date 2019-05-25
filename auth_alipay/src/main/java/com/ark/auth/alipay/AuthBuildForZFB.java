@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.alipay.sdk.app.PayTask;
@@ -20,14 +21,15 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public class AuthBuildForZFB extends BaseAuthBuildForZFB {
 
-    private AuthBuildForZFB(Context context) {
+    private AuthBuildForZFB(@NonNull Context context) {
         super(context);
     }
 
     public static Auth.AuthBuildFactory getFactory() {
         return new Auth.AuthBuildFactory() {
+            @NonNull
             @Override
-            public <T extends BaseAuthBuild> T getAuthBuild(Context context) {
+            public <T extends BaseAuthBuild> T getAuthBuild(@NonNull Context context) {
                 //noinspection unchecked
                 return (T) new AuthBuildForZFB(context);
             }
@@ -87,7 +89,7 @@ public class AuthBuildForZFB extends BaseAuthBuildForZFB {
     }
 
     @Override
-    protected void pay(Activity activity) {
+    protected void pay(@NonNull Activity activity) {
         if (TextUtils.isEmpty(mOrderInfo)) {
             mCallback.onFailed(String.valueOf(Auth.ErrorParameter),
                     "必须添加 OrderInfo, 使用 payOrderInfo(info) ");

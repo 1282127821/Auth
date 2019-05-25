@@ -16,8 +16,9 @@ buildscript {
 allprojects {
     repositories {
         maven {
-            url 'http://nexus.xiaoc.cn/repository/xslczx/'
+            url 'http://nexus.xiaoc.cn/repository/maven-releases/'
         }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/releases/' }
         jcenter()
         mavenCentral()
         maven { url "https://dl.bintray.com/thelasterstar/maven/" }
@@ -26,6 +27,10 @@ allprojects {
     tasks.withType(Javadoc).all {
         enabled = false
     }
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'//不使用缓存，使用仓库中最新的包
 }
 
 task clean(type: Delete) {

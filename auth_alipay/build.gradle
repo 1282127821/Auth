@@ -1,59 +1,100 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+  compileSdkVersion 28
 
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+  defaultConfig {
+    minSdkVersion 16
+    targetSdkVersion 28
+    versionCode 1
+    versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
 
+  buildTypes {
+    debug {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
-
-    buildTypes {
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
+  }
 
-    aaptOptions {
-        cruncherEnabled false
-    }
-
-    lintOptions {
-        abortOnError false
-    }
+  lintOptions {
+    abortOnError false
+  }
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation project(':auth')
-    api 'com.ark.aar:alipaySdk:15.6.2@aar'
+  implementation 'com.android.support:appcompat-v7:28.0.0'
+  implementation project(':auth')
+  api 'com.ark.res:alipaySdk:15.6.0@aar'
+  api 'com.aliyun.ams:alicloud-android-utdid:1.1.5.3'
 }
-Properties properties = new Properties()
-InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
-properties.load(inputStream)
-def key_userName = properties.getProperty('userName')
-def key_password = properties.getProperty('password')
 apply plugin: 'maven'
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "http://nexus.xiaoc.cn/repository/xslczx/") {
-                authentication(userName: key_userName, password: key_password)
-            }
-            pom.groupId = 'com.ark.authsdk'
-            pom.artifactId = 'alipay'
-            pom.version = '1.0.0'
-        }
-    }
+
+def isReleaseBuild() {
+  return VERSION_NAME.toUpperCase().contains("SNAPSHOT") == false
 }
-apply from: '../upload_task.gradle'
+
+def getRepositoryUsername() {
+  return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+}
+
+def getRepositoryPassword() {
+  return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
+}
+
+def getRepositoryUrl() {
+  return isReleaseBuild() ? RELEASE_REPOSITORY_URL : SNAPSHOT_REPOSITORY_URL
+}
+
+afterEvaluate { project ->
+  uploadArchives {
+    repositories {
+      mavenDeployer {
+        pom.groupId = GROUP
+        pom.artifactId = 'auth_alipay'
+        pom.version = VERSION_NAME
+        repository(url: getRepositoryUrl()) {
+          authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+        }
+
+        pom.whenConfigured { pom ->
+          pom.dependencies.forEach { dep ->
+            if (dep.getVersion() == "unspecified") {
+              dep.setGroupId(GROUP)
+              dep.setVersion(VERSION_NAME)
+            }
+          }
+        }
+      }
+    }
+  }
+  task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+  }
+  task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+  }
+  task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.sourceFiles
+  }
+
+  //解决 JavaDoc 中文注释生成失败的问题
+  tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+  }
+  artifacts {
+    archives androidSourcesJar
+    archives androidJavadocsJar
+  }
+}

@@ -29,14 +29,14 @@
     
 2. 根据需求选择是否添加, 在 app module 的 build.gradle 中添加引用:  
 
-	```aidl
+	```
     dependencies {
-        compile 'com.ark.auth:core:1.0.0'
-        compile 'com.ark.auth:qq:1.0.0'
-        compile 'com.ark.auth:weibo:1.0.0'
-        compile 'com.ark.auth:weixin:1.0.0'
-        compile 'com.ark.auth:unionpay:1.0.0'
-        compile 'com.ark.auth:alipay:1.0.0'
+         implementation 'com.ark.authsdk:auth:1.0.0'
+         implementation 'com.ark.authsdk:auth_alipay:1.0.0'
+         implementation 'com.ark.authsdk:auth_qq:1.0.0'
+         implementation 'com.ark.authsdk:auth_weibo:1.0.0'
+         implementation 'com.ark.authsdk:auth_weixin:1.0.0'
+         implementation 'com.ark.authsdk:auth_unionpay:1.0.0'
     }
     ```
 

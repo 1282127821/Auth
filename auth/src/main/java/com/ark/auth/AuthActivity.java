@@ -15,7 +15,6 @@ public class AuthActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         String sign = getIntent().getStringExtra("Sign");
         if (!TextUtils.isEmpty(sign)) {
             initQQ(sign);
@@ -30,7 +29,6 @@ public class AuthActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-
         if (mControllerWB != null) {
             mControllerWB.callbackShare();
         }
@@ -42,7 +40,6 @@ public class AuthActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (mControllerQQ != null) {
             mControllerQQ.callback(requestCode, resultCode, data);
         }
@@ -78,7 +75,7 @@ public class AuthActivity extends Activity {
     // QQ 相关
     private void initQQ(String sign) {
         BaseAuthBuild builder = Auth.getBuilder(sign);
-        if (builder != null && builder instanceof BaseAuthBuildForQQ) {
+        if (builder instanceof BaseAuthBuildForQQ) {
             mControllerQQ = ((BaseAuthBuildForQQ) builder).getController(this);
         }
     }
@@ -86,7 +83,7 @@ public class AuthActivity extends Activity {
     // 微博相关
     private void initWB(String sign) {
         BaseAuthBuild builder = Auth.getBuilder(sign);
-        if (builder != null && builder instanceof BaseAuthBuildForWB) {
+        if (builder instanceof BaseAuthBuildForWB) {
             mControllerWB = ((BaseAuthBuildForWB) builder).getController(this);
         }
     }
@@ -94,7 +91,7 @@ public class AuthActivity extends Activity {
     // 微信相关
     private void initWX() {
         for (BaseAuthBuild builder : Auth.mBuilderSet) {
-            if (builder != null && builder instanceof BaseAuthBuildForWX) {
+            if (builder instanceof BaseAuthBuildForWX) {
                 mControllerWX = ((BaseAuthBuildForWX) builder).getController(this);
                 mControllerWX.callback();
                 break;
@@ -105,7 +102,7 @@ public class AuthActivity extends Activity {
     // 银联相关
     private void initYL(String sign) {
         BaseAuthBuild builder = Auth.getBuilder(sign);
-        if (builder != null && builder instanceof BaseAuthBuildForYL && builder.mAction == Auth.Pay) {
+        if (builder instanceof BaseAuthBuildForYL && builder.mAction == Auth.Pay) {
             mControllerYL = ((BaseAuthBuildForYL) builder).getController(this);
             mControllerYL.pay();
         }
@@ -114,7 +111,7 @@ public class AuthActivity extends Activity {
     // 支付宝相关
     private void initZFB(String sign) {
         BaseAuthBuild builder = Auth.getBuilder(sign);
-        if (builder != null && builder instanceof BaseAuthBuildForZFB && builder.mAction == Auth.Pay) {
+        if (builder instanceof BaseAuthBuildForZFB && builder.mAction == Auth.Pay) {
             ((BaseAuthBuildForZFB) builder).pay(this);
         }
     }
