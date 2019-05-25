@@ -1,17 +1,16 @@
 # Android 第三方登录、分享、支付、签约集成方案
 
-- 目前很多 APP 都添加了第三方授权功能，包括登录、分享、支付、签约等等。其中集成较多的平台是微信、QQ、支付宝、微博、银联。
-- 由于这些代码都是固定写法，所以最后抽取成了一个库 [Auth](https://github.com/xslczx/Auth)。
-- 目前支持微信、微博、QQ的登录和分享功能，微信、支付宝、银联的支付功能，微信、支付宝的签约功能。
-- 可根据需求引用不同第三方集成库。
-- SDK 不支持同时做多个请求。
+- 支持微信、微博、QQ的登录和分享功能，微信、支付宝、银联的支付功能，微信、支付宝的签约功能。
+- 可根据需求单独使用某一个三方平台。
 
 ### 集成第三方 SDK 版本：  
   - 微信 : com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.6  
   - 微博 : com.sina.weibo.sdk:core:4.3.8:openDefaultRelease@aar  
-  - QQ : open_sdk_r5990_lite  
-  - 支付宝 : com.ark.res:alipaySdk:15.6.0@aar
+  - QQ : open_sdk_r5990_lite.jar
+  - 支付宝 : com.ark.res:alipaySdk:15.6.0@aar，com.aliyun.ams:alicloud-android-utdid:1.1.5.3
   - 银联: 手机支付控件接入指南: 3.4.1
+  
+  注：alipaySdk是阿里官方aar，仅仅是转移到个人maven而已
 
 # 集成方法
 1. 根据需求选择是否添加, 在 project 目录下的 build.gradle 文件中添加微博的 maven 地址：
@@ -23,6 +22,7 @@
             jcenter()
             maven { url 'http://nexus.xiaoc.cn/repository/maven-releases/' }
             maven { url "https://dl.bintray.com/thelasterstar/maven/" }     // 微博 aar
+            maven { url 'http://maven.aliyun.com/nexus/content/repositories/releases/' }
         }
     }
 	```
